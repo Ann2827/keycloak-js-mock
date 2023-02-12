@@ -1,0 +1,78 @@
+name: 'CI'
+on:
+  push:
+
+jobs:
+  build:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install
+        continue-on-error: false
+        run: yarn install --immutable --immutable-cache --check-cache
+
+      - name: Cache Save Node Modules
+        continue-on-error: false
+        id: cache-save
+        uses: actions/cache/save@v3
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-nodeModules
+
+      - name: Test
+        continue-on-error: false
+        run: yarn test
+
+      - name: Build Library
+        continue-on-error: false
+        run: yarn build
+
+      - name: Author
+        continue-on-error: false
+        run: |
+          cd example
+          git config --local user.email "ann.bystrova96@mail.ru"
+          git config --local user.name "Ann Bystrova"
+
+      - name: Upload Artifacts for Library
+        uses: actions/upload-artifact@v3
+        with:
+          name: library
+          path: ./dist
+          retention-days: 1
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && contains(github.ref, '/main')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Download Artifacts for Library
+        continue-on-error: false
+        uses: actions/download-artifact@v3
+        with:
+          name: library
+          path: ./dist
+
+      - name: Cache Restore Node Modules
+        continue-on-error: false
+        id: cache-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-nodeModules
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: yarn semantic-release
