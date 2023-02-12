@@ -32,13 +32,6 @@ jobs:
         continue-on-error: false
         run: yarn build
 
-      - name: Author
-        continue-on-error: false
-        run: |
-          cd example
-          git config --local user.email "ann.bystrova96@mail.ru"
-          git config --local user.name "Ann Bystrova"
-
       - name: Upload Artifacts for Library
         uses: actions/upload-artifact@v3
         with:
