@@ -1,0 +1,83 @@
+{
+  "name": "keycloak-js-mock",
+  "version": "1.0.0",
+  "description": "JavaScript adapter that does not request data in Keycloak.",
+  "main": "dist/index.cjs",
+  "source": "lib/index.ts",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "npm run prebuild && npm run build:rollup",
+    "build:rollup": "tsc && rollup -c",
+    "lint": "eslint './lib/*.ts'",
+    "lint:fix": "eslint './lib/*.ts' --fix",
+    "test": "jest",
+    "test:unit": "jest --collectCoverage",
+    "release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ann2827/keycloak-js-mock.git"
+  },
+  "keywords": [
+    "keycloak",
+    "mock",
+    "keycloak-js",
+    "adapter"
+  ],
+  "author": "Ann Bystrova <ann.bystrova96@mail.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ann2827/keycloak-js-mock/issues"
+  },
+  "homepage": "https://github.com/Ann2827/keycloak-js-mock#readme",
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "keycloak-js": "^15.0.2"
+  },
+  "dependencies": {
+    "jose": "^4.11.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/plugin-proposal-decorators": "^7.18.6",
+    "@babel/plugin-transform-runtime": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-typescript": "^7.17.12",
+    "@rollup/plugin-commonjs": "^21.0.3",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-typescript": "8.3.1",
+    "@semantic-release/git": "^10.0.0",
+    "@types/cross-spawn": "^6.0.2",
+    "@types/flat": "^5.0.2",
+    "@types/form-data": "^2.5.0",
+    "@types/jest": "27.4.1",
+    "@types/node": "16.11.47",
+    "@typescript-eslint/eslint-plugin": "5.17.0",
+    "@typescript-eslint/parser": "5.17.0",
+    "babel-jest": "^28.1.1",
+    "babel-plugin-transform-import-meta": "2.1.1",
+    "eslint": "8.12.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-typescript": "16.1.4",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-jest": "26.1.4",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-unicorn": "41.0.1",
+    "image-to-base64": "^2.2.0",
+    "jest": "^28.0.0",
+    "prettier": "^2.6.2",
+    "rollup": "^2.75.6",
+    "rollup-plugin-terser": "^7.0.2",
+    "keycloak-js": "^15.0.2",
+    "ts-jest": "^28.0.5",
+    "typescript": "^4.6.4"
+  },
+  "engines": {
+    "node": ">=14.16.0",
+    "npm": ">=8.1.0"
+  }
+}
