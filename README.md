@@ -6,7 +6,7 @@
 
 JavaScript adapter that does not request data in Keycloak.
 
-It can be used to launch a frontend application without a backend or for testing.
+It can be used to launch a frontend application without a Keycloak in docker or for testing.
 
 ## Getting Started
 
