@@ -2,10 +2,17 @@ import { KeycloakMock } from '../lib';
 
 // TODO: add tests
 describe('KeycloakMock:', () => {
+  const keycloak = KeycloakMock();
+
+  afterAll(() => {
+    keycloak.logout();
+  })
+
   test('init', async () => {
-    const keycloak = KeycloakMock();
-    await keycloak.init({  });
-    expect(keycloak.token).not.toBeUndefined();
-    expect(keycloak.authenticated).toBe(true);
+    await keycloak.init({  }).then((authenticated) => {
+      expect(keycloak.token).not.toBeUndefined();
+      expect(authenticated).toBe(true);
+      expect(keycloak.authenticated).toBe(true);
+    });
   });
 });
