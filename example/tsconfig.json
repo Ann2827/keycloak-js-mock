@@ -12,7 +12,6 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -20,15 +19,14 @@
     "baseUrl": ".",
     "sourceMap": true,
     "inlineSources": true,
-    "sourceRoot": "./lib",
+    "sourceRoot": "./src",
     "noFallthroughCasesInSwitch": true,
-//    "outDir": "./dist",
-    "declaration": true,
-    "declarationDir": "./types",
-    "experimentalDecorators": true,
+  },
+  "ts-node": {
+    "esm": true
   },
   "include": [
-    "lib"
+    "src"
   ],
-  "exclude": ["dist", "node_modules", ".github", "__tests__", "example"]
+  "exclude": ["node_modules"]
 }
