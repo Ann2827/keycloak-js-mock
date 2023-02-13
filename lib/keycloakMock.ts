@@ -9,7 +9,7 @@ import Keycloak, {
   KeycloakRegisterOptions,
 } from 'keycloak-js';
 import { generateToken, getExpByToken } from './generateToken';
-import { createPromise } from './keycloakPromise';
+import createPromise from './keycloakPromise';
 import { customizeData } from './mockCustomize';
 import mergeObject from './mergeObject';
 
@@ -288,6 +288,8 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
   },
 };
 
-export const KeycloakMock = (_config?: Keycloak.KeycloakConfig | string): Keycloak.KeycloakInstance => ({
+const KeycloakMock = (_config?: Keycloak.KeycloakConfig | string): Keycloak.KeycloakInstance => ({
   ...keycloakInstanceMock,
 });
+
+export default KeycloakMock;

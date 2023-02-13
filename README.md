@@ -20,16 +20,16 @@ KeycloakMock returns an identical instance.
 The library generates a token without the help of Keycloak based on the received profile (by default, all the necessary data is already written).
 
 ```ts
-import { KeycloakMock, customize } from 'keycloak-js-mock';
+import KeycloakJs from 'keycloak-js-mock';
 import Keycloak from 'keycloak-js';
 
 const keycloakInit = (mocked: boolean): Keycloak.KeycloakInstance => {
   if (mocked) {
-    customize.profile({
+    KeycloakJs.customize.profile({
       username: 'myUserName',
     });
     
-    return KeycloakMock();
+    return KeycloakJs.KeycloakMock();
   }
 
   return Keycloak({

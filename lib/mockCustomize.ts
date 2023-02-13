@@ -97,7 +97,7 @@ export interface ICustomize {
   promises(data: RecursivePartial<ICustomizeDataPromises>): void;
   reset(): void;
 }
-export const customize: ICustomize = {
+const customize: ICustomize = {
   profile(data) {
     customizeData.profile = { ...customizeData.profile, ...data };
   },
@@ -123,3 +123,5 @@ export const customize: ICustomize = {
     });
   },
 };
+
+export default customize;

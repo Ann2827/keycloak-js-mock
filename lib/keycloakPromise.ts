@@ -1,6 +1,6 @@
 import { KeycloakPromise, KeycloakPromiseCallback } from 'keycloak-js';
 
-export function createPromise<TSuccess, TError>(fn: Promise<TSuccess>): { promise: KeycloakPromise<TSuccess, TError> } {
+function createPromise<TSuccess, TError>(fn: Promise<TSuccess>): { promise: KeycloakPromise<TSuccess, TError> } {
   // @ts-ignore
   const promise: KeycloakPromise<TSuccess, TError> = new Promise<TSuccess>(function (resolve, reject) {
     Promise.resolve(fn)
@@ -27,3 +27,5 @@ export function createPromise<TSuccess, TError>(fn: Promise<TSuccess>): { promis
   };
   return { promise };
 }
+
+export default createPromise;
