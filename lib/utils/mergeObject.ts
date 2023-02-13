@@ -1,4 +1,4 @@
-import { Merge, RecursivePartial } from './types';
+import { Merge, RecursivePartial } from '../types';
 
 const cleanDuplicate = <T>(array: T[]): T[] => {
   return [...new Set(array.map((item) => JSON.stringify(item)))].map((item) => JSON.parse(item));
@@ -6,7 +6,7 @@ const cleanDuplicate = <T>(array: T[]): T[] => {
 
 // FIXME: types
 // eslint-disable-next-line @typescript-eslint/ban-types
-const mergeObject = <T1, T2>(defaultObject: T1, newObject: T2): Merge<T1, T2> | Object => {
+export const mergeObject = <T1, T2>(defaultObject: T1, newObject: T2): Merge<T1, T2> | Object => {
   if (typeof defaultObject !== 'object' || typeof newObject !== 'object') return {};
 
   const object: RecursivePartial<Merge<T1, T2>> = { ...defaultObject };
@@ -30,5 +30,3 @@ const mergeObject = <T1, T2>(defaultObject: T1, newObject: T2): Merge<T1, T2> | 
 
   return object as Merge<T1, T2>;
 };
-
-export default mergeObject;

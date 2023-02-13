@@ -7,3 +7,4 @@ dist/
 # dirs
 node_modules/
 .github/
+example/

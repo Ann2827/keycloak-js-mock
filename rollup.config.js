@@ -9,8 +9,8 @@ export default [
     output: {
       name: "KeycloakJsMock",
       exports: 'named',
-      file: "dist/index.cjs",
-      format: "cjs",
+      file: "dist/index.mjs",
+      format: "es",
       sourcemap: false
     },
     plugins: [

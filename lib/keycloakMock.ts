@@ -8,10 +8,9 @@ import Keycloak, {
   KeycloakPromise,
   KeycloakRegisterOptions,
 } from 'keycloak-js';
-import { generateToken, getExpByToken } from './generateToken';
-import createPromise from './keycloakPromise';
-import { customizeData } from './mockCustomize';
-import mergeObject from './mergeObject';
+import { createPromise, mergeObject, getExpByToken, generateToken } from './utils';
+import { customizeData } from './customize';
+import { IGenerateToken } from './types';
 
 let tokenTimeout: null | NodeJS.Timeout = null;
 const clearTokenTimeout = (): void => {
@@ -70,7 +69,7 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
    */
   init(initOptions: KeycloakInitOptions): KeycloakPromise<boolean, KeycloakError> {
     const promise = new Promise<boolean>((resolve, reject) => {
-      Promise.resolve(generateToken())
+      Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
           if (customizeData.promises.init?.method !== 'reject') {
             this.token = response;
@@ -130,7 +129,7 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
   },
   updateToken(_minValidity: number): KeycloakPromise<boolean, boolean> {
     const promise = new Promise<boolean>((resolve, reject) => {
-      Promise.resolve(generateToken())
+      Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
           if (customizeData.promises.updateToken?.method !== 'reject') {
             this.token = response;
@@ -160,7 +159,7 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
   },
   login(options?: KeycloakLoginOptions): KeycloakPromise<void, void> {
     const promise = new Promise<void>((resolve, reject) => {
-      Promise.resolve(generateToken())
+      Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
           if (customizeData.promises.login?.method !== 'reject') {
             this.token = response;
@@ -191,7 +190,7 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
   },
   register(options?: KeycloakRegisterOptions): KeycloakPromise<void, void> {
     const promise = new Promise<void>((resolve, reject) => {
-      Promise.resolve(generateToken())
+      Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
           if (customizeData.promises.register?.method !== 'reject') {
             this.token = response;

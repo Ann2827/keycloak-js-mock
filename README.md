@@ -21,15 +21,15 @@ The library generates a token without the help of Keycloak based on the received
 
 ```ts
 import KeycloakJs from 'keycloak-js-mock';
-import Keycloak from 'keycloak-js';
+import KeycloakMock, { customize } from 'keycloak-js';
 
 const keycloakInit = (mocked: boolean): Keycloak.KeycloakInstance => {
   if (mocked) {
-    KeycloakJs.customize.profile({
+    customize.profile({
       username: 'myUserName',
     });
     
-    return KeycloakJs.KeycloakMock();
+    return KeycloakMock();
   }
 
   return Keycloak({

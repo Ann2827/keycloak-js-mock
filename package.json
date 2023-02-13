@@ -1,17 +1,16 @@
 {
   "name": "keycloak-js-mock",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "JavaScript adapter that does not request data in Keycloak.",
-  "main": "dist/index.cjs",
+  "main": "dist/index.mjs",
   "source": "lib/index.ts",
   "types": "dist/types/index.d.ts",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "npm run prebuild && npm run build:rollup",
-    "build:rollup": "tsc && rollup -c",
+    "build": "npm run prebuild && tsc && rollup -c",
     "lint": "eslint './lib/*.ts'",
     "lint:fix": "eslint './lib/*.ts' --fix",
-    "test": "jest",
+    "test": "npm run lint && jest",
     "test:unit": "jest --collectCoverage",
     "release": "semantic-release"
   },
@@ -35,6 +34,9 @@
   "files": [
     "dist"
   ],
+  "directories": {
+    "example": "example"
+  },
   "peerDependencies": {
     "keycloak-js": "^15.0.2"
   },

@@ -1,4 +1,4 @@
-import { KeycloakMock } from '../lib';
+import KeycloakMock from '../lib';
 
 // TODO: add tests
 describe('KeycloakMock:', () => {

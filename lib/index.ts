@@ -1,5 +1,4 @@
-export type { ICustomize } from './mockCustomize';
-
-export { default as KeycloakMock } from './keycloakMock';
-export { default as customize } from './mockCustomize';
-export { default as createPromise } from './keycloakPromise';
+export { customize } from './customize';
+export type { ICustomize } from './types';
+export { createPromise } from './utils';
+export { default } from './keycloakMock';

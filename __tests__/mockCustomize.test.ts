@@ -1,4 +1,4 @@
-import customize, { initialData, customizeData } from '../lib/mockCustomize';
+import { customize, initialData, customizeData } from '../lib/customize';
 
 describe('customize:', () => {
   test('profile: customizeData should be updated', () => {
