@@ -40,7 +40,17 @@
     "@typescript-eslint/no-explicit-any": 0,
     "unicorn/prefer-node-protocol": 0,
     "@typescript-eslint/ban-ts-comment": 0,
-//    "unicorn/no-process-exit": 0,
-    "@typescript-eslint/no-non-null-assertion": 0
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "import/order": ["error", {
+      "newlines-between": "always",
+      "groups": [
+        ["builtin", "external"],
+        ["internal", "parent"],
+        ["sibling", "index"],
+        "object",
+        "type"
+      ]
+//      "distinctGroup": false
+    }]
   }
 }

@@ -1,34 +1,30 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2022",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
     "allowJs": true,
+    "checkJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "es2022",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "baseUrl": ".",
-    "sourceMap": true,
-    "inlineSources": true,
-    "sourceRoot": "./lib",
     "noFallthroughCasesInSwitch": true,
-//    "outDir": "./dist",
+    "outDir": "./dist",
     "declaration": true,
     "declarationDir": "./types",
-    "experimentalDecorators": true,
+    //  "experimentalDecorators": true
   },
   "include": [
     "lib"
   ],
-  "exclude": ["dist", "node_modules", ".github", "__tests__", "example"]
 }
