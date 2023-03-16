@@ -4,13 +4,12 @@
   "version": "0.1.0",
   "private": false,
   "author": "Ann Bystrova <ann.bystrova96@mail.ru>",
-  "type": "module",
   "engines": {
     "node": ">=16",
     "npm": ">=8"
   },
   "scripts": {
-    "start": "ts-node-esm src/index"
+    "start": "ts-node src/index"
   },
   "dependencies": {
     "keycloak-js": "link:../node_modules/keycloak-js",

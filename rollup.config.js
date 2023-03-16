@@ -1,7 +1,6 @@
 import typescript from "@rollup/plugin-typescript";
-import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
-// import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 
 export default [
   {
@@ -9,19 +8,19 @@ export default [
     output: {
       name: "KeycloakJsMock",
       exports: 'named',
-      file: "dist/index.mjs",
-      format: "es",
+      file: "dist/index.cjs",
+      format: "cjs",
       sourcemap: false
     },
+    external: ['jose'],
     plugins: [
       json(),
-      commonjs(),
-      typescript({ tsconfig: "./tsconfig.json", declaration: true }),
-      // terser({
-      //   output: {
-      //     comments: false
-      //   }
-      // }),
+      typescript({ tsconfig: "./tsconfig.json" }),
+      terser({
+        output: {
+          comments: false
+        }
+      }),
     ],
   }
 ];
