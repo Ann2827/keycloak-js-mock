@@ -1,5 +1,4 @@
-// import KeycloakMock, { customize } from 'keycloak-js-mock';
-import { KeycloakMock, customize } from 'keycloak-js-mock';
+import { customize, KeycloakMock } from 'keycloak-js-mock';
 import * as process from 'process';
 
 customize.profile({

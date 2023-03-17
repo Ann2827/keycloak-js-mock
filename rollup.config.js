@@ -7,7 +7,7 @@ export default [
     input: "lib/index.ts",
     output: {
       name: "KeycloakMock",
-      exports: 'named',
+      // exports: 'named',
       file: "dist/index.cjs",
       format: "cjs",
       sourcemap: false
