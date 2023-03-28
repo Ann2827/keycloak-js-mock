@@ -9,9 +9,9 @@ import Keycloak, {
   KeycloakRegisterOptions,
 } from 'keycloak-js';
 
-import { createPromise, mergeObject, getExpByToken, generateToken } from './utils';
+import { createPromise, mergeObject, getExpByToken, generateToken } from '../utils';
 import { customizeData } from './customize';
-import { IGenerateToken } from './types';
+import { IGenerateToken } from '../types';
 
 let tokenTimeout: null | NodeJS.Timeout = null;
 const clearTokenTimeout = (): void => {
