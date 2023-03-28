@@ -1,5 +1,5 @@
-import { ICustomize, ICustomizeData } from './types';
-import { mergeObject } from './utils';
+import { ICustomize, ICustomizeData } from '../types';
+import { mergeObject } from '../utils';
 
 export const initialData: Readonly<ICustomizeData> = {
   profile: {
