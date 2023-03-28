@@ -1,5 +1,5 @@
 import { mergeObject } from '../lib/utils';
-import { customizeData } from "../lib/customize";
+import { customizeData } from '../lib/core/customize';
 
 describe('mergeObject:', () => {
   test('should be merged', () => {

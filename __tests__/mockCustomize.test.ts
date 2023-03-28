@@ -1,4 +1,4 @@
-import { customize, initialData, customizeData } from '../lib/customize';
+import { customize, initialData, customizeData } from '../lib/core/customize';
 
 describe('customize:', () => {
   test('profile: customizeData should be updated', () => {

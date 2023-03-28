@@ -1,5 +1,5 @@
-import { createPromise } from './utils';
-
 export type { ICustomize } from './types';
-export { createPromise };
-export * from './core'
+
+export * from './core';
+
+export { createPromise } from './utils';
