@@ -5,7 +5,7 @@ customize.profile({
   username: 'myUserName',
 });
 
-const keycloak = KeycloakMock();
+const keycloak = new KeycloakMock();
 keycloak.init({}).then(() => {
   console.log('token', keycloak.token);
   console.log('profile', keycloak.profile);
