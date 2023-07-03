@@ -19,6 +19,7 @@ npm install -D keycloak-js-mock
 KeycloakMock returns an identical instance.
 The library generates a token without the help of Keycloak based on the received profile (by default, all the necessary data is already written).
 
+**To start the application without connecting to KK:**
 ```ts
 import Keycloak from 'keycloak-js';
 import { KeycloakMock, customize } from 'keycloak-js-mock';
@@ -45,6 +46,47 @@ await keycloak.init({ pkceMethod: 'S256', onLoad: 'login-required' }).then(() =>
   keycloak.authenticated // true
   keycloak.token // eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldU...
   keycloak.tokenParsed // { username: 'myUserName', email: 'j.snow@google.com', ... }
+});
+
+```
+
+**For jest testing:**
+```ts
+/**
+ * To run using @testing-library/jest-dom
+ * @jest-environment node
+ */
+import Keycloak, { KeycloakConfig } from 'keycloak-js';
+import { customize, KeycloakMock as mockKeycloak } from 'keycloak-js-mock';
+
+jest.mock('keycloak-js', () => {
+  return jest.fn().mockImplementation((config?: KeycloakConfig | string) => {
+    return new mockKeycloak(config);
+  });
+});
+
+describe('KeycloakMock:', () => {
+  const username = 'myTestUserName';
+  let keycloak: Keycloak;
+
+  beforeAll(() => {
+    customize.profile({
+      username,
+    });
+    keycloak = new Keycloak();
+  });
+
+  afterAll(() => {
+    // In order to complete the test, do not forget to logout
+    keycloak.logout();
+  });
+
+  test('init', async () => {
+    await keycloak.init({}).then((authenticated) => {
+      expect(authenticated).toBe(true);
+      expect(keycloak.tokenParsed!.username).toBe(username);
+    });
+  });
 });
 
 ```

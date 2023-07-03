@@ -23,5 +23,23 @@ export default [
         }
       }),
     ],
+  },
+  {
+    input: "lib/index.ts",
+    output: {
+      exports: 'named',
+      file: "dist/index.js",
+      format: "cjs",
+      sourcemap: false,
+    },
+    external: ['jose'],
+    plugins: [
+      typescript({ tsconfig: "./tsconfig.json" }),
+      terser({
+        output: {
+          comments: false
+        }
+      }),
+    ],
   }
 ];
