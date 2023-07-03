@@ -1,6 +1,6 @@
 {
   "name": "keycloak-js-mock",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "JavaScript adapter that does not request data in Keycloak.",
   "types": "dist/types/index.d.ts",
   "module": "dist/index.modern.js",
