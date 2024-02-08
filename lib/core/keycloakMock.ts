@@ -278,6 +278,10 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
     this.authenticated = undefined;
     this.profile = undefined;
     this.userInfo = undefined;
+    this.onAuthLogout?.();
+    if (this.loginRequired) {
+      this.login();
+    }
   },
   hasRealmRole(role: string): boolean {
     return Boolean(customizeData.tokenParsed.realm_access?.roles.includes(role));
