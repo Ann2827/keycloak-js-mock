@@ -16,14 +16,6 @@ jobs:
         continue-on-error: false
         run: yarn install --immutable --immutable-cache --check-cache
 
-      - name: Cache Save Node Modules
-        continue-on-error: false
-        id: cache-save
-        uses: actions/cache/save@v3
-        with:
-          path: ./node_modules
-          key: ${{ runner.os }}-nodeModules
-
       - name: Test
         continue-on-error: false
         run: yarn test
@@ -56,16 +48,7 @@ jobs:
           name: library
           path: ./dist
 
-      - name: Cache Restore Node Modules
-        continue-on-error: false
-        id: cache-restore
-        uses: actions/cache/restore@v3
+      - name: NPM publish
+        uses: JS-DevTools/npm-publish@v3
         with:
-          path: ./node_modules
-          key: ${{ runner.os }}-nodeModules
-
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: yarn semantic-release
+          token: ${{ secrets.NPM_TOKEN }}
