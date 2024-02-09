@@ -7,6 +7,7 @@ import Keycloak, {
   KeycloakProfile,
   KeycloakPromise,
   KeycloakRegisterOptions,
+  KeycloakConfig,
 } from 'keycloak-js';
 
 import { createPromise, mergeObject, getExpByToken, generateToken } from '../utils';
@@ -38,7 +39,7 @@ class KeycloakMock implements Keycloak {
   public profile: Keycloak['profile'];
   public userInfo: Keycloak['userInfo'];
 
-  constructor(config?: Keycloak.KeycloakConfig | string) {
+  constructor(config?: KeycloakConfig | string) {
     if (typeof config === 'object' && config?.realm) this.realm = config.realm;
     if (typeof config === 'object' && config?.clientId) this.clientId = config.clientId;
   }
@@ -272,6 +273,10 @@ class KeycloakMock implements Keycloak {
     this.authenticated = undefined;
     this.profile = undefined;
     this.userInfo = undefined;
+    this.onAuthLogout?.();
+    if (this.loginRequired) {
+      this.login();
+    }
   };
   public hasRealmRole(role: string): boolean {
     return Boolean(customizeData.tokenParsed.realm_access?.roles.includes(role));
