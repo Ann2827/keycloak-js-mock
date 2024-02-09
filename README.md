@@ -8,7 +8,7 @@ JavaScript adapter that does not request data in Keycloak.
 
 It can be used to launch a frontend application without a Keycloak in docker or for testing.
 
-[keycloak-js source for 17.0.0](https://github.com/keycloak/keycloak/tree/17.0.0/adapters/oidc/js)
+[keycloak-js source for 18.0.1](https://github.com/keycloak/keycloak/tree/18.0.1/adapters/oidc/js)
 
 ## Getting Started
 
@@ -26,16 +26,16 @@ The library generates a token without the help of Keycloak based on the received
 import Keycloak from 'keycloak-js';
 import { KeycloakMock, customize } from 'keycloak-js-mock';
 
-const keycloakInit = (mocked: boolean): Keycloak.KeycloakInstance => {
+const keycloakInit = (mocked: boolean): Keycloak => {
   if (mocked) {
     customize.profile({
       username: 'myUserName',
     });
     
-    return KeycloakMock();
+    return new KeycloakMock();
   }
 
-  return Keycloak({
+  return new Keycloak({
     url: REACT_APP_KEYCLOAK_URL,
     realm: KEYCLOAK_REALM_NAME,
     clientId: KEYCLOAK_CLIENT_ID,
@@ -95,7 +95,7 @@ describe('KeycloakMock:', () => {
 
 ## 📝 License
 
-Copyright © 2023 [Bystrova Ann](https://github.com/Ann2827).<br />
+Copyright © 2024 [Bystrova Ann](https://github.com/Ann2827).<br />
 This project is [MIT](https://github.com/Ann2827/keycloak-js-mock/blob/main/LICENSE) licensed.
 
 ## Contact <a name = "contact"></a>

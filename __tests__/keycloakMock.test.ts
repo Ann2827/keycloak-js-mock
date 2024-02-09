@@ -2,7 +2,7 @@ import { KeycloakMock } from '../lib';
 
 // TODO: add tests
 describe('KeycloakMock:', () => {
-  const keycloak = KeycloakMock();
+  const keycloak = new KeycloakMock();
 
   afterAll(() => {
     keycloak.logout();

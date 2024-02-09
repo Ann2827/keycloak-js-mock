@@ -7,68 +7,63 @@ import Keycloak, {
   KeycloakProfile,
   KeycloakPromise,
   KeycloakRegisterOptions,
+  KeycloakConfig,
 } from 'keycloak-js';
 
 import { createPromise, mergeObject, getExpByToken, generateToken } from '../utils';
 import { customizeData } from './customize';
 import { IGenerateToken } from '../types';
 
-let tokenTimeout: null | NodeJS.Timeout = null;
-const clearTokenTimeout = (): void => {
-  if (tokenTimeout) clearTimeout(tokenTimeout);
-};
-const setTokenTimeout = (token: string): void => {
-  clearTokenTimeout();
+class KeycloakMock implements Keycloak {
+  public token: Keycloak['token'] = undefined;
+  public tokenParsed: Keycloak['tokenParsed'];
+  public authenticated: Keycloak['authenticated'];
+  public refreshToken: Keycloak['refreshToken'];
+  public subject: Keycloak['subject'];
+  public responseMode: Keycloak['responseMode'];
+  public responseType: Keycloak['responseType'];
+  public flow: Keycloak['flow'];
+  public realmAccess: Keycloak['realmAccess'];
+  public resourceAccess: Keycloak['resourceAccess'];
+  public refreshTokenParsed: Keycloak['refreshTokenParsed'];
+  public idToken: Keycloak['idToken'];
+  public idTokenParsed: Keycloak['idTokenParsed'];
+  public timeSkew: Keycloak['timeSkew'];
+  public loginRequired: Keycloak['loginRequired'];
+  public authServerUrl: Keycloak['authServerUrl'];
+  public realm: Keycloak['realm'];
+  public clientId: Keycloak['clientId'];
+  public clientSecret: Keycloak['clientSecret'];
+  public redirectUri: Keycloak['redirectUri'];
+  public sessionId: Keycloak['sessionId'];
+  public profile: Keycloak['profile'];
+  public userInfo: Keycloak['userInfo'];
 
-  const time = getExpByToken(token);
-  tokenTimeout = setTimeout(() => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    keycloakInstanceMock.token = undefined;
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    keycloakInstanceMock.tokenParsed = undefined;
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    keycloakInstanceMock.authenticated = undefined;
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    keycloakInstanceMock.onTokenExpired?.();
-  }, time * 1000);
-};
+  constructor(config?: KeycloakConfig | string) {
+    if (typeof config === 'object' && config?.realm) this.realm = config.realm;
+    if (typeof config === 'object' && config?.clientId) this.clientId = config.clientId;
+  }
 
-const keycloakInstanceMock: Keycloak.KeycloakInstance = {
-  token: undefined,
-  tokenParsed: undefined,
-  authenticated: undefined,
-  refreshToken: undefined,
-  subject: undefined,
-  responseMode: undefined,
-  responseType: undefined,
-  flow: undefined,
-  realmAccess: undefined,
-  resourceAccess: undefined,
-  refreshTokenParsed: undefined,
-  idToken: undefined,
-  idTokenParsed: undefined,
-  timeSkew: undefined,
-  loginRequired: undefined,
-  authServerUrl: undefined,
-  realm: undefined,
-  clientId: undefined,
-  clientSecret: undefined,
-  redirectUri: undefined,
-  sessionId: undefined,
-  profile: undefined,
-  userInfo: undefined,
-  onReady(_authenticated?: boolean) {},
-  onAuthSuccess() {},
-  onAuthError(_errorData: KeycloakError) {},
-  onAuthRefreshSuccess() {},
-  onAuthRefreshError() {},
-  onAuthLogout() {},
-  onTokenExpired() {},
-  onActionUpdate(_status: 'success' | 'cancelled' | 'error') {},
-  /**
-   * required methods
-   */
-  init(initOptions: KeycloakInitOptions): KeycloakPromise<boolean, KeycloakError> {
+  protected tokenTimeout: null | NodeJS.Timeout = null;
+  protected clearTokenTimeout() {
+    if (this.tokenTimeout) {
+      clearTimeout(this.tokenTimeout);
+      this.tokenTimeout = null;
+    }
+  };
+  protected setTokenTimeout(token: string): void {
+    this.clearTokenTimeout();
+
+    const time = getExpByToken(token);
+    this.tokenTimeout = setTimeout(() => {
+      this.token = undefined;
+      this.tokenParsed = undefined;
+      this.authenticated = undefined;
+      this.onTokenExpired?.();
+    }, time * 1000);
+  };
+
+  public init(initOptions: KeycloakInitOptions): KeycloakPromise<boolean, KeycloakError> {
     const promise = new Promise<boolean>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
@@ -81,7 +76,7 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
               ...customizeData.profile,
               exp: getExpByToken(response),
             });
-            setTokenTimeout(response);
+            this.setTokenTimeout(response);
 
             // init options
             if ('token' in initOptions) this.token = initOptions.token;
@@ -104,8 +99,8 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
         });
     });
     return createPromise<boolean, KeycloakError>(promise).promise;
-  },
-  logout(options?: KeycloakLogoutOptions): KeycloakPromise<void, void> {
+  };
+  public logout(options?: KeycloakLogoutOptions): KeycloakPromise<void, void> {
     const promise = new Promise<void>((resolve, reject) => {
       if (customizeData.promises.logout?.method !== 'reject') {
         this.token = undefined;
@@ -113,7 +108,7 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
         this.authenticated = undefined;
         this.profile = undefined;
         this.userInfo = undefined;
-        clearTokenTimeout();
+        this.clearTokenTimeout();
 
         // logout options
         if (options && 'redirectUri' in options) this.redirectUri = options.redirectUri;
@@ -127,8 +122,8 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
       }
     });
     return createPromise<void, void>(promise).promise;
-  },
-  updateToken(_minValidity: number): KeycloakPromise<boolean, boolean> {
+  };
+  public updateToken(_minValidity: number): KeycloakPromise<boolean, boolean> {
     const promise = new Promise<boolean>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
@@ -141,7 +136,7 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
               ...customizeData.profile,
               exp: getExpByToken(response),
             });
-            setTokenTimeout(response);
+            this.setTokenTimeout(response);
 
             customizeData.promises.updateToken?.resolveCallback?.(this);
             this.onActionUpdate?.('success');
@@ -157,8 +152,8 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
         });
     });
     return createPromise<boolean, boolean>(promise).promise;
-  },
-  login(options?: KeycloakLoginOptions): KeycloakPromise<void, void> {
+  };
+  public login(options?: KeycloakLoginOptions): KeycloakPromise<void, void> {
     const promise = new Promise<void>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
@@ -171,7 +166,7 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
               ...customizeData.profile,
               exp: getExpByToken(response),
             });
-            setTokenTimeout(response);
+            this.setTokenTimeout(response);
 
             // login options
             if (options && 'redirectUri' in options) this.redirectUri = options.redirectUri;
@@ -188,8 +183,8 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
         });
     });
     return createPromise<void, void>(promise).promise;
-  },
-  register(options?: KeycloakRegisterOptions): KeycloakPromise<void, void> {
+  };
+  public register(options?: KeycloakRegisterOptions): KeycloakPromise<void, void> {
     const promise = new Promise<void>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
@@ -202,7 +197,7 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
               ...customizeData.profile,
               exp: getExpByToken(response),
             });
-            setTokenTimeout(response);
+            this.setTokenTimeout(response);
 
             // register options
             if (options && 'redirectUri' in options) this.redirectUri = options.redirectUri;
@@ -219,8 +214,8 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
         });
     });
     return createPromise<void, void>(promise).promise;
-  },
-  accountManagement(): KeycloakPromise<void, void> {
+  };
+  public accountManagement(): KeycloakPromise<void, void> {
     const promise = new Promise<void>((resolve, reject) => {
       if (customizeData.promises.accountManagement?.method !== 'reject') {
         customizeData.promises.accountManagement?.resolveCallback?.(this);
@@ -231,8 +226,8 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
       }
     });
     return createPromise<void, void>(promise).promise;
-  },
-  loadUserProfile(): KeycloakPromise<KeycloakProfile, void> {
+  };
+  public loadUserProfile(): KeycloakPromise<KeycloakProfile, void> {
     const promise = new Promise<KeycloakProfile>((resolve, reject) => {
       if (customizeData.promises.loadUserProfile?.method !== 'reject') {
         customizeData.promises.loadUserProfile?.resolveCallback?.(this);
@@ -243,8 +238,8 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
       }
     });
     return createPromise<KeycloakProfile, void>(promise).promise;
-  },
-  loadUserInfo(): KeycloakPromise<Record<string, unknown>, void> {
+  };
+  public loadUserInfo(): KeycloakPromise<Record<string, unknown>, void> {
     const promise = new Promise<Record<string, unknown>>((resolve, reject) => {
       if (customizeData.promises.loadUserInfo?.method !== 'reject') {
         customizeData.promises.loadUserInfo?.resolveCallback?.(this);
@@ -255,25 +250,25 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
       }
     });
     return createPromise<Record<string, unknown>, void>(promise).promise;
-  },
-  createLoginUrl(_options?: KeycloakLoginOptions): string {
+  };
+  public createLoginUrl(_options?: KeycloakLoginOptions): string {
     return customizeData.url.login;
-  },
-  createLogoutUrl(_options?: KeycloakLogoutOptions): string {
+  };
+  public createLogoutUrl(_options?: KeycloakLogoutOptions): string {
     return customizeData.url.logout;
-  },
-  createRegisterUrl(_options?: KeycloakRegisterOptions): string {
+  };
+  public createRegisterUrl(_options?: KeycloakRegisterOptions): string {
     return customizeData.url.register;
-  },
-  createAccountUrl(_options?: KeycloakAccountOptions): string {
+  };
+  public createAccountUrl(_options?: KeycloakAccountOptions): string {
     return customizeData.url.account;
-  },
-  isTokenExpired(minValidity?: number): boolean {
+  };
+  public isTokenExpired(minValidity?: number): boolean {
     if (!this.token) return true;
     return (minValidity || 0) > getExpByToken(this.token);
-  },
-  clearToken(): void {
-    clearTokenTimeout();
+  };
+  public clearToken(): void {
+    this.clearTokenTimeout();
     this.token = undefined;
     this.authenticated = undefined;
     this.profile = undefined;
@@ -282,18 +277,23 @@ const keycloakInstanceMock: Keycloak.KeycloakInstance = {
     if (this.loginRequired) {
       this.login();
     }
-  },
-  hasRealmRole(role: string): boolean {
+  };
+  public hasRealmRole(role: string): boolean {
     return Boolean(customizeData.tokenParsed.realm_access?.roles.includes(role));
-  },
-  hasResourceRole(role: string, resource?: string): boolean {
+  };
+  public hasResourceRole(role: string, resource?: string): boolean {
     const currentResource: string = resource || customizeData.tokenParsed.aud!;
     return Boolean(customizeData.tokenParsed.resource_access?.[currentResource].roles.includes(role));
-  },
-};
+  };
 
-const KeycloakMock = (_config?: Keycloak.KeycloakConfig | string): Keycloak.KeycloakInstance => ({
-  ...keycloakInstanceMock,
-});
+  public onReady(_authenticated?: boolean) {};
+  public onAuthSuccess() {};
+  public onAuthError(_errorData: KeycloakError) {};
+  public onAuthRefreshSuccess() {};
+  public onAuthRefreshError() {};
+  public onAuthLogout() {};
+  public onTokenExpired() {};
+  public onActionUpdate(_status: 'success' | 'cancelled' | 'error') {};
+}
 
 export default KeycloakMock;

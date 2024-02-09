@@ -7,11 +7,11 @@ customize.profile({
 });
 
 const useMocked = true;
-const keycloakInit = (): Keycloak.KeycloakInstance => {
+const keycloakInit = (): Keycloak => {
   if (useMocked) {
-    return KeycloakMock()
+    return new KeycloakMock()
   }
-  return Keycloak();
+  return new Keycloak();
 }
 
 const keycloak = keycloakInit();
