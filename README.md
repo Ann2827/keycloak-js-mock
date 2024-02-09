@@ -8,7 +8,7 @@ JavaScript adapter that does not request data in Keycloak.
 
 It can be used to launch a frontend application without a Keycloak in docker or for testing.
 
-[keycloak-js source for 19.0.3](https://github.com/keycloak/keycloak/tree/19.0.3/adapters/oidc/js)
+[keycloak-js source for 20.0.5](https://github.com/keycloak/keycloak/tree/20.0.5/adapters/oidc/js)
 
 ## Getting Started
 
