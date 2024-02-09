@@ -13,8 +13,8 @@ const keycloakInit = (): Keycloak => {
   }
   return new Keycloak();
 }
-
 const keycloak = keycloakInit();
+
 keycloak.init({}).then(() => {
   console.log('token', keycloak.token);
   console.log('profile', keycloak.profile);
