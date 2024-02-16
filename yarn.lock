@@ -5059,10 +5059,10 @@ just-diff@^5.0.1:
   resolved "https://registry.yarnpkg.com/just-diff/-/just-diff-5.2.0.tgz#60dca55891cf24cd4a094e33504660692348a241"
   integrity sha512-6ufhP9SHjb7jibNFrNxyFZ6od3g+An6Ai9mhGRvcYe8UJlH0prseN64M+6ZBBUoKYHZsitDP42gAJ8+eVWr3lw==
 
-keycloak-js@21.1.2:
-  version "21.1.2"
-  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-21.1.2.tgz#949889848c024c2a585c177875e012f0163a1d6a"
-  integrity sha512-+6r1BvmutWGJBtibo7bcFbHWIlA7XoXRCwcA4vopeJh59Nv2Js0ju2u+t8AYth+C6Cg7/BNfO3eCTbsl/dTBHw==
+keycloak-js@22.0.5:
+  version "22.0.5"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-22.0.5.tgz#8264cec1ff27015e1e53310e108cef3f796a5809"
+  integrity sha512-a7ZwCZeHl8tpeJBy102tZtAnHslDUOA1Nf/sHNF3HYLchKpwoDuaitwIUiS2GnNUe+tlNKLlCqZS+Mi5K79m1w==
   dependencies:
     base64-js "^1.5.1"
     js-sha256 "^0.9.0"
