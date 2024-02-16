@@ -5,12 +5,11 @@ import Keycloak, {
   KeycloakLoginOptions,
   KeycloakLogoutOptions,
   KeycloakProfile,
-  KeycloakPromise,
   KeycloakRegisterOptions,
   KeycloakConfig,
 } from 'keycloak-js';
 
-import { createPromise, mergeObject, getExpByToken, generateToken } from '../utils';
+import { mergeObject, getExpByToken, generateToken } from '../utils';
 import { customizeData } from './customize';
 import { IGenerateToken } from '../types';
 
@@ -63,8 +62,8 @@ class KeycloakMock implements Keycloak {
     }, time * 1000);
   };
 
-  public init(initOptions: KeycloakInitOptions): KeycloakPromise<boolean, KeycloakError> {
-    const promise = new Promise<boolean>((resolve, reject) => {
+  public init(initOptions: KeycloakInitOptions): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
           if (customizeData.promises.init?.method !== 'reject') {
@@ -98,10 +97,9 @@ class KeycloakMock implements Keycloak {
           reject(error);
         });
     });
-    return createPromise<boolean, KeycloakError>(promise).promise;
   };
-  public logout(options?: KeycloakLogoutOptions): KeycloakPromise<void, void> {
-    const promise = new Promise<void>((resolve, reject) => {
+  public logout(options?: KeycloakLogoutOptions): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       if (customizeData.promises.logout?.method !== 'reject') {
         this.token = undefined;
         this.tokenParsed = undefined;
@@ -121,10 +119,9 @@ class KeycloakMock implements Keycloak {
         reject(void 1);
       }
     });
-    return createPromise<void, void>(promise).promise;
   };
-  public updateToken(_minValidity: number): KeycloakPromise<boolean, boolean> {
-    const promise = new Promise<boolean>((resolve, reject) => {
+  public updateToken(_minValidity: number): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
           if (customizeData.promises.updateToken?.method !== 'reject') {
@@ -151,10 +148,9 @@ class KeycloakMock implements Keycloak {
           reject(error);
         });
     });
-    return createPromise<boolean, boolean>(promise).promise;
   };
-  public login(options?: KeycloakLoginOptions): KeycloakPromise<void, void> {
-    const promise = new Promise<void>((resolve, reject) => {
+  public login(options?: KeycloakLoginOptions): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
           if (customizeData.promises.login?.method !== 'reject') {
@@ -182,10 +178,9 @@ class KeycloakMock implements Keycloak {
           reject(error);
         });
     });
-    return createPromise<void, void>(promise).promise;
   };
-  public register(options?: KeycloakRegisterOptions): KeycloakPromise<void, void> {
-    const promise = new Promise<void>((resolve, reject) => {
+  public register(options?: KeycloakRegisterOptions): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
         .then((response) => {
           if (customizeData.promises.register?.method !== 'reject') {
@@ -213,10 +208,9 @@ class KeycloakMock implements Keycloak {
           reject(error);
         });
     });
-    return createPromise<void, void>(promise).promise;
   };
-  public accountManagement(): KeycloakPromise<void, void> {
-    const promise = new Promise<void>((resolve, reject) => {
+  public accountManagement(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       if (customizeData.promises.accountManagement?.method !== 'reject') {
         customizeData.promises.accountManagement?.resolveCallback?.(this);
         resolve(void 1);
@@ -225,10 +219,9 @@ class KeycloakMock implements Keycloak {
         reject(void 1);
       }
     });
-    return createPromise<void, void>(promise).promise;
   };
-  public loadUserProfile(): KeycloakPromise<KeycloakProfile, void> {
-    const promise = new Promise<KeycloakProfile>((resolve, reject) => {
+  public loadUserProfile(): Promise<KeycloakProfile> {
+    return new Promise<KeycloakProfile>((resolve, reject) => {
       if (customizeData.promises.loadUserProfile?.method !== 'reject') {
         customizeData.promises.loadUserProfile?.resolveCallback?.(this);
         resolve({ ...this.profile });
@@ -237,10 +230,9 @@ class KeycloakMock implements Keycloak {
         reject(void 1);
       }
     });
-    return createPromise<KeycloakProfile, void>(promise).promise;
   };
-  public loadUserInfo(): KeycloakPromise<Record<string, unknown>, void> {
-    const promise = new Promise<Record<string, unknown>>((resolve, reject) => {
+  public loadUserInfo(): Promise<Record<string, unknown>> {
+    return new Promise<Record<string, unknown>>((resolve, reject) => {
       if (customizeData.promises.loadUserInfo?.method !== 'reject') {
         customizeData.promises.loadUserInfo?.resolveCallback?.(this);
         resolve({ ...this.userInfo });
@@ -249,7 +241,6 @@ class KeycloakMock implements Keycloak {
         reject(void 1);
       }
     });
-    return createPromise<Record<string, unknown>, void>(promise).promise;
   };
   public createLoginUrl(_options?: KeycloakLoginOptions): string {
     return customizeData.url.login;
