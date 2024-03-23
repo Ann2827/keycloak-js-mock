@@ -32,7 +32,6 @@ class KeycloakMock implements Keycloak {
   public authServerUrl: Keycloak['authServerUrl'];
   public realm: Keycloak['realm'];
   public clientId: Keycloak['clientId'];
-  public clientSecret: Keycloak['clientSecret'];
   public redirectUri: Keycloak['redirectUri'];
   public sessionId: Keycloak['sessionId'];
   public profile: Keycloak['profile'];
