@@ -7,10 +7,10 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Install
         continue-on-error: false
@@ -25,7 +25,7 @@ jobs:
         run: yarn build
 
       - name: Upload Artifacts for Library
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: library
           path: ./dist
@@ -33,17 +33,17 @@ jobs:
 
   deploy:
     needs: build
-    if: github.event_name == 'push' && ( contains(github.ref, '/main') || contains(github.ref, '/alpha') )
+    if: github.event_name == 'push' && contains(github.ref, '/main')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Download Artifacts for Library
         continue-on-error: false
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: library
           path: ./dist
