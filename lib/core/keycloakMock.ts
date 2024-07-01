@@ -48,7 +48,7 @@ class KeycloakMock implements Keycloak {
       clearTimeout(this.tokenTimeout);
       this.tokenTimeout = null;
     }
-  };
+  }
   protected setTokenTimeout(token: string): void {
     this.clearTokenTimeout();
 
@@ -59,7 +59,7 @@ class KeycloakMock implements Keycloak {
       this.authenticated = undefined;
       this.onTokenExpired?.();
     }, time * 1000);
-  };
+  }
 
   public init(initOptions: KeycloakInitOptions): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
@@ -96,7 +96,7 @@ class KeycloakMock implements Keycloak {
           reject(error);
         });
     });
-  };
+  }
   public logout(options?: KeycloakLogoutOptions): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (customizeData.promises.logout?.method !== 'reject') {
@@ -118,7 +118,7 @@ class KeycloakMock implements Keycloak {
         reject(void 1);
       }
     });
-  };
+  }
   public updateToken(_minValidity: number): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
@@ -132,6 +132,10 @@ class KeycloakMock implements Keycloak {
               ...customizeData.profile,
               exp: getExpByToken(response),
             });
+            this.sessionId = this.tokenParsed?.sid;
+            this.subject = this.tokenParsed?.sub;
+            this.realmAccess = this.tokenParsed?.realm_access;
+            this.resourceAccess = this.tokenParsed?.resource_access;
             this.setTokenTimeout(response);
 
             customizeData.promises.updateToken?.resolveCallback?.(this);
@@ -147,7 +151,7 @@ class KeycloakMock implements Keycloak {
           reject(error);
         });
     });
-  };
+  }
   public login(options?: KeycloakLoginOptions): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
@@ -161,6 +165,10 @@ class KeycloakMock implements Keycloak {
               ...customizeData.profile,
               exp: getExpByToken(response),
             });
+            this.sessionId = this.tokenParsed?.sid;
+            this.subject = this.tokenParsed?.sub;
+            this.realmAccess = this.tokenParsed?.realm_access;
+            this.resourceAccess = this.tokenParsed?.resource_access;
             this.setTokenTimeout(response);
 
             // login options
@@ -177,7 +185,7 @@ class KeycloakMock implements Keycloak {
           reject(error);
         });
     });
-  };
+  }
   public register(options?: KeycloakRegisterOptions): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Promise.resolve(generateToken({ data: customizeData.profile as IGenerateToken['data'], ...customizeData.jwt }))
@@ -191,6 +199,10 @@ class KeycloakMock implements Keycloak {
               ...customizeData.profile,
               exp: getExpByToken(response),
             });
+            this.sessionId = this.tokenParsed?.sid;
+            this.subject = this.tokenParsed?.sub;
+            this.realmAccess = this.tokenParsed?.realm_access;
+            this.resourceAccess = this.tokenParsed?.resource_access;
             this.setTokenTimeout(response);
 
             // register options
@@ -207,7 +219,7 @@ class KeycloakMock implements Keycloak {
           reject(error);
         });
     });
-  };
+  }
   public accountManagement(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (customizeData.promises.accountManagement?.method !== 'reject') {
@@ -218,7 +230,7 @@ class KeycloakMock implements Keycloak {
         reject(void 1);
       }
     });
-  };
+  }
   public loadUserProfile(): Promise<KeycloakProfile> {
     return new Promise<KeycloakProfile>((resolve, reject) => {
       if (customizeData.promises.loadUserProfile?.method !== 'reject') {
@@ -229,7 +241,7 @@ class KeycloakMock implements Keycloak {
         reject(void 1);
       }
     });
-  };
+  }
   public loadUserInfo(): Promise<Record<string, unknown>> {
     return new Promise<Record<string, unknown>>((resolve, reject) => {
       if (customizeData.promises.loadUserInfo?.method !== 'reject') {
@@ -240,50 +252,55 @@ class KeycloakMock implements Keycloak {
         reject(void 1);
       }
     });
-  };
+  }
   public createLoginUrl(_options?: KeycloakLoginOptions): string {
     return customizeData.url.login;
-  };
+  }
   public createLogoutUrl(_options?: KeycloakLogoutOptions): string {
     return customizeData.url.logout;
-  };
+  }
   public createRegisterUrl(_options?: KeycloakRegisterOptions): string {
     return customizeData.url.register;
-  };
+  }
   public createAccountUrl(_options?: KeycloakAccountOptions): string {
     return customizeData.url.account;
-  };
+  }
   public isTokenExpired(minValidity?: number): boolean {
     if (!this.token) return true;
     return (minValidity || 0) > getExpByToken(this.token);
-  };
+  }
   public clearToken(): void {
     this.clearTokenTimeout();
     this.token = undefined;
     this.authenticated = undefined;
     this.profile = undefined;
     this.userInfo = undefined;
+    this.tokenParsed = undefined;
+    this.subject = undefined;
+    this.realmAccess = undefined;
+    this.realmAccess = undefined;
+    this.authenticated = false;
     this.onAuthLogout?.();
     if (this.loginRequired) {
       this.login();
     }
-  };
+  }
   public hasRealmRole(role: string): boolean {
     return Boolean(customizeData.tokenParsed.realm_access?.roles.includes(role));
-  };
+  }
   public hasResourceRole(role: string, resource?: string): boolean {
     const currentResource: string = resource || customizeData.tokenParsed.aud!;
     return Boolean(customizeData.tokenParsed.resource_access?.[currentResource].roles.includes(role));
-  };
+  }
 
-  public onReady(_authenticated?: boolean) {};
-  public onAuthSuccess() {};
-  public onAuthError(_errorData: KeycloakError) {};
-  public onAuthRefreshSuccess() {};
-  public onAuthRefreshError() {};
-  public onAuthLogout() {};
-  public onTokenExpired() {};
-  public onActionUpdate(_status: 'success' | 'cancelled' | 'error') {};
+  public onReady(_authenticated?: boolean) {}
+  public onAuthSuccess() {}
+  public onAuthError(_errorData: KeycloakError) {}
+  public onAuthRefreshSuccess() {}
+  public onAuthRefreshError() {}
+  public onAuthLogout() {}
+  public onTokenExpired() {}
+  public onActionUpdate(_status: 'success' | 'cancelled' | 'error') {}
 }
 
 export default KeycloakMock;

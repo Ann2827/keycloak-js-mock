@@ -1,5 +1,5 @@
-import {SignJWT, decodeJwt, JWTPayload} from 'jose';
-import {IGenerateToken} from "../types";
+import { SignJWT, decodeJwt, JWTPayload } from 'jose';
+import { IGenerateToken } from '../types';
 
 export const generateToken = ({ data, alg, expiration, secret }: IGenerateToken): Promise<string> =>
   new SignJWT({ ...data })

@@ -1,4 +1,4 @@
-import {JWTPayload} from "jose";
+import { JWTPayload } from 'jose';
 
 export interface IGenerateToken {
   data: JWTPayload;

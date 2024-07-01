@@ -8,7 +8,7 @@ JavaScript adapter that does not request data in Keycloak.
 
 It can be used to launch a frontend application without a Keycloak in docker or for testing.
 
-[keycloak-js source for 23.0.7](https://github.com/keycloak/keycloak/tree/23.0.7/js/libs/keycloak-js)
+[keycloak-js source for 23.0.7](https://github.com/keycloak/keycloak/tree/24.0.5/js/libs/keycloak-js)
 
 ## Getting Started
 

@@ -14,5 +14,5 @@
    - `yarn lint:fix`
    - `yarn test`
    - `yarn build`
-   - `cd exmaple` and `yarn install` and them check with `yarn start`
+   - `cd example` and `yarn install` and them check with `yarn start`
 9. PR in GitHub, merge and manual create new tag and release.
