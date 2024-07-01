@@ -1,6 +1,6 @@
-import Keycloak, {KeycloakProfile, KeycloakTokenParsed} from "keycloak-js";
-import {CompactJWSHeaderParameters} from "jose/dist/types/types";
-import {RecursivePartial} from "./index";
+import Keycloak, { KeycloakProfile, KeycloakTokenParsed } from 'keycloak-js';
+import { CompactJWSHeaderParameters } from 'jose/dist/types/types';
+import { RecursivePartial } from './index';
 
 type TPromiseCallback = (instance: Keycloak) => void;
 type TPromiseMethod = 'resolve' | 'reject';
