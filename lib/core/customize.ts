@@ -46,7 +46,7 @@ export const initialData: Readonly<ICustomizeData> = {
       },
     },
     sid: '8187983f-5baf-4bd1-bfe1-fd323fddd3f7.keycloak-1-43237',
-    sub: 'subject'
+    sub: 'subject',
   },
 };
 
